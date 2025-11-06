@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
+import edu.ucne.esthiber_valentin_ap2_p2.presentacion.GastoScreen
 import edu.ucne.esthiber_valentin_ap2_p2.ui.theme.Esthiber_Valentin_AP2_P2Theme
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -21,10 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Esthiber_Valentin_AP2_P2Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    GastoScreen()
                 }
             }
         }
