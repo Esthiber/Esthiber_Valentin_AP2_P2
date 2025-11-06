@@ -2,10 +2,14 @@ package edu.ucne.esthiber_valentin_ap2_p2.di
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import edu.ucne.esthiber_valentin_ap2_p2.data.remote.GastoApi
+import edu.ucne.esthiber_valentin_ap2_p2.data.repository.GastoRepositoryImpl
+import edu.ucne.esthiber_valentin_ap2_p2.domain.repository.GastoRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -16,7 +20,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object ApiModule {
-    const val BASE_URL = "https://linkdeapi.example.com" // TODO reemplazar con la URL real
+    const val BASE_URL = "https://gestionhuacalesapi.azurewebsites.net"
 
     @Provides
     @Singleton
@@ -39,12 +43,22 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun providesApi(moshi: Moshi, okHttpClient: OkHttpClient) { // TODO especificar el tipo de retorno correcto de la api
+    fun providesApi(moshi: Moshi, okHttpClient: OkHttpClient): GastoApi {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(okHttpClient)
             .build()
-            .create()// TODO reemplazar con la interfaz del API real
+            .create(GastoApi::class.java)
+    }
+
+    @InstallIn(SingletonComponent::class)
+    @Module
+    abstract class RepositoryModule {
+        @Binds
+        @Singleton
+        abstract fun bindGastosRepository(
+            GastosRepositoryImpl: GastoRepositoryImpl
+        ): GastoRepository
     }
 }
